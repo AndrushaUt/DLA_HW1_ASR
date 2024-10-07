@@ -4,7 +4,6 @@ import editdistance
 def calc_cer(target_text, predicted_text) -> float:
     if len(target_text) == 0:
         return 1
-    print(target_text)
     return editdistance.eval(target_text, predicted_text) / len(target_text)
 
 
