@@ -125,7 +125,7 @@ class BaseDataset(Dataset):
         Returns:
             spectrogram (Tensor): spectrogram for the audio.
         """
-        return self.instance_transforms["get_spectrogram"](audio)
+        return torch.log(self.instance_transforms["get_spectrogram"](audio) + 1e-5)
 
     def preprocess_data(self, instance_data):
         """
