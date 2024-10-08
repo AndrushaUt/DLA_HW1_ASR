@@ -1,8 +1,8 @@
 defaults:
   - model: deep_speach
   - writer: wandb
-  - metrics: example
-  - datasets: example
+  - metrics: beam_search
+  - datasets: onebatchtest
   - dataloader: example
   - transforms: example_only_instance
   - _self_

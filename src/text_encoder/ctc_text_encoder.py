@@ -1,6 +1,8 @@
 import re
 from string import ascii_lowercase
 
+from pyctcdecode import Alphabet, BeamSearchDecoderCTC
+
 import torch
 
 # TODO add CTC decode
@@ -19,7 +21,6 @@ class CTCTextEncoder:
             alphabet (list): alphabet for language. If None, it will be
                 set to ascii
         """
-
         if alphabet is None:
             alphabet = list(ascii_lowercase + " ")
 
@@ -28,6 +29,8 @@ class CTCTextEncoder:
 
         self.ind2char = dict(enumerate(self.vocab))
         self.char2ind = {v: k for k, v in self.ind2char.items()}
+
+        self.decoder = BeamSearchDecoderCTC(Alphabet(self.vocab, False), None)
 
     def __len__(self):
         return len(self.vocab)
@@ -68,6 +71,9 @@ class CTCTextEncoder:
                 decoded.append(self.ind2char[ind])
             last_char_ind = ind
         return "".join(decoded)
+
+    def ctc_beam_search_decode(self, inds: torch.Tensor) -> str:
+        return self.decoder.decode(inds)
 
     @staticmethod
     def normalize_text(text: str):
