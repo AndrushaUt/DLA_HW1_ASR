@@ -73,7 +73,7 @@ class CTCTextEncoder:
         return "".join(decoded)
 
     def ctc_beam_search_decode(self, inds: torch.Tensor) -> str:
-        return self.decoder.decode(inds)
+        return self.decoder.decode(inds, beam_width=3)
 
     @staticmethod
     def normalize_text(text: str):
