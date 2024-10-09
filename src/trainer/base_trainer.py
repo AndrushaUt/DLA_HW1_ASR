@@ -28,6 +28,7 @@ class BaseTrainer:
         dataloaders,
         logger,
         writer,
+        log_predictions_type="argmax",
         epoch_len=None,
         skip_oom=True,
         batch_transforms=None,
@@ -58,6 +59,7 @@ class BaseTrainer:
                 tensor name.
         """
         self.is_train = True
+        self.log_predictions_type=log_predictions_type
 
         self.config = config
         self.cfg_trainer = self.config.trainer
