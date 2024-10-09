@@ -1,7 +1,7 @@
 _target_: src.logger.WandBWriter
 project_name: "pytorch_template_asr_example"
 entity: null
-run_name: "30_epochs_clip_10_lr_2e_4_max_lr_4e_4_beam_size_5"
+run_name: "20_epochs_clip_10_lr_2e_4_max_lr_4e_4_beam_size_5_lm"
 mode: "online"
 loss_names: ["loss"] # which losses to log (useful for multi-loss tasks, s.a. GANs)
 log_checkpoints: False # set to True if you want to log save_dir with checkpoints to W&B
