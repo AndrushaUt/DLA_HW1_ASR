@@ -1,8 +1,8 @@
 defaults:
   - model: deep_speach
-  - writer: wandb
+  - writer: wanb_lm_beam_search_onebatchtest
   - metrics: beam_search
-  - datasets: example
+  - datasets: onebatchtest
   - dataloader: example
   - transforms: example_only_instance
   - _self_
@@ -20,6 +20,8 @@ loss_function:
   _target_: src.loss.CTCLossWrapper
 text_encoder:
   _target_: src.text_encoder.CTCTextEncoder
+  librispeech_vocab_path: /kaggle/working/DLA_HW1_ASR/src/pretrained_lm/librispeech-vocab.txt
+  lm_path: /kaggle/working/DLA_HW1_ASR/src/pretrained_lm/lowercase_3-gram.pruned.1e-7.arpa
 trainer:
   log_step: 50
   n_epochs: 30

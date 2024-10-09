@@ -1,9 +1,10 @@
 import re
 from string import ascii_lowercase
 
-from pyctcdecode import Alphabet, BeamSearchDecoderCTC
+from pyctcdecode import Alphabet, BeamSearchDecoderCTC, build_ctcdecoder
 
 import torch
+import kenlm
 
 # TODO add CTC decode
 # TODO add BPE, LM, Beam Search support
@@ -15,12 +16,15 @@ import torch
 class CTCTextEncoder:
     EMPTY_TOK = ""
 
-    def __init__(self, alphabet=None, **kwargs):
+    def __init__(self, alphabet=None, librispeech_vocab_path=None, lm_path=None, **kwargs):
         """
         Args:
             alphabet (list): alphabet for language. If None, it will be
                 set to ascii
         """
+        if librispeech_vocab_path is not None:
+            with open(librispeech_vocab_path) as f:
+                unigrams = [t.lower() for t in f.read().strip().split("\n")]
         if alphabet is None:
             alphabet = list(ascii_lowercase + " ")
 
@@ -29,8 +33,11 @@ class CTCTextEncoder:
 
         self.ind2char = dict(enumerate(self.vocab))
         self.char2ind = {v: k for k, v in self.ind2char.items()}
-
-        self.decoder = BeamSearchDecoderCTC(Alphabet(self.vocab, False), None)
+        if lm_path:
+            lm_model = kenlm.Model(lm_path)
+            self.decoder = build_ctcdecoder(self.vocab, lm_model, unigrams)
+        else:
+            self.decoder = BeamSearchDecoderCTC(Alphabet(self.vocab, False), None)
 
     def __len__(self):
         return len(self.vocab)
