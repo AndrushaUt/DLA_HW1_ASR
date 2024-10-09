@@ -34,8 +34,7 @@ class CTCTextEncoder:
         self.ind2char = dict(enumerate(self.vocab))
         self.char2ind = {v: k for k, v in self.ind2char.items()}
         if lm_path:
-            lm_model = kenlm.Model(lm_path)
-            self.decoder = build_ctcdecoder(self.vocab, lm_model, unigrams)
+            self.decoder = build_ctcdecoder(self.vocab, lm_path, unigrams)
         else:
             self.decoder = BeamSearchDecoderCTC(Alphabet(self.vocab, False), None)
 
