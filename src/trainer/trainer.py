@@ -131,6 +131,7 @@ class Trainer(BaseTrainer):
             # TODO add beam search
             # Note: by improving text encoder and metrics design
             # this logging can also be improved significantly
+            log_probs = log_probs.cpu().detach().numpy()
             argmax_inds = [
                 inds[: int(ind_len)]
                 for inds, ind_len in zip(log_probs, log_probs_length.numpy())
@@ -140,7 +141,7 @@ class Trainer(BaseTrainer):
             tuples = list(zip(argmax_texts, text, audio_path))
 
             rows = {}
-            for pred, target, raw_pred, audio_path in tuples[:examples_to_log]:
+            for pred, target, audio_path in tuples[:examples_to_log]:
                 target = self.text_encoder.normalize_text(target)
                 wer = calc_wer(target, pred) * 100
                 cer = calc_cer(target, pred) * 100
