@@ -140,7 +140,7 @@ class Trainer(BaseTrainer):
             argmax_texts = [self.text_encoder.ctc_beam_search_decode(inds) for inds in argmax_inds]
             print(argmax_texts)
             tuples = list(zip(argmax_texts, text, audio_path))
-
+            print(tuples)
             rows = {}
             for pred, target, audio_path in tuples[:examples_to_log]:
                 target = self.text_encoder.normalize_text(target)
